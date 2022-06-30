@@ -1,6 +1,7 @@
 #Custom
 /lib/utils/private.dart
 .timetracker
+android/app/google-services.json
 # Miscellaneous
 *.class
 *.log

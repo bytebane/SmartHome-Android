@@ -20,9 +20,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _lights = LightsDBHelp();
 
+  final _selectedIndex = 1.obs;
+
   final List<bool> _isSelected = [true, false];
 
-  final _selectedIndex = 1.obs;
   final _myAnimationDuration = const Duration(milliseconds: 300);
 
   checkLights() async {

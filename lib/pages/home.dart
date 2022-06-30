@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
       //   backgroundColor: colorWhite,
       //   elevation: 0,
       //   title: const Text(
-      //     'R3HOME',
+      //     'My HOME',
       //     style: TextStyle(color: myPrimaryColor, fontSize: 42),
       //   ),
       // ),

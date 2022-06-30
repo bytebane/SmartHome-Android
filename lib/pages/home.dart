@@ -6,8 +6,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'connection_page.dart';
-import '../utils/constants.dart';
 import '../utils/private.dart';
+import '../utils/constants.dart';
 import '../helpers/lights_db_help.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,9 +23,21 @@ class _HomePageState extends State<HomePage> {
   final List<bool> _isSelected = [true, false];
 
   final _selectedIndex = 1.obs;
+  final _myAnimationDuration = const Duration(milliseconds: 300);
 
   checkLights() async {
     await _lights.getLights();
+    if (_lights.light1.value == true &&
+        _lights.light2.value == true &&
+        _lights.light3.value == true &&
+        _lights.light4.value == true) {
+      _selectedIndex.value = 0;
+    } else {
+      _selectedIndex.value = 1;
+    }
+  }
+
+  isLightsON() async {
     if (_lights.light1.value == true &&
         _lights.light2.value == true &&
         _lights.light3.value == true &&
@@ -44,16 +56,17 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    isLightsON();
     return Scaffold(
       backgroundColor: colorWhite,
       // appBar: AppBar(
       //   centerTitle: true,
-      //   backgroundColor: r3colorWhite,
+      //   backgroundColor: colorWhite,
       //   elevation: 0,
-      // title: const Text(
-      //   'R3HOME',
-      //   style: TextStyle(color: r3PrimaryColor, fontSize: 42),
-      // ),
+      //   title: const Text(
+      //     'R3HOME',
+      //     style: TextStyle(color: myPrimaryColor, fontSize: 42),
+      //   ),
       // ),
       body: FutureBuilder(
           future: FirebaseDatabase.instance.ref('myHome').get(),
@@ -66,7 +79,10 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
+                        //* Switch 2
+                        AnimatedContainer(
+                          duration: _myAnimationDuration,
+                          curve: Curves.easeIn,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: _lights.light2.value
@@ -80,12 +96,23 @@ class _HomePageState extends State<HomePage> {
                             ),
                             iconSize: 80,
                             color: colorWhite,
+                            splashColor: _lights.light2.value
+                                ? myPrimaryColor
+                                : Colors.black26,
+                            highlightColor: _lights.light2.value
+                                ? myPrimaryLightColor
+                                : colorGrey,
                             onPressed: () async {
-                              _lights.setLight2(!_lights.light2.value);
+                              _lights
+                                  .setLight2(!_lights.light2.value)
+                                  .then((_) => {isLightsON()});
                             },
                           ),
                         ),
-                        Container(
+                        //* Switch 1
+                        AnimatedContainer(
+                          duration: _myAnimationDuration,
+                          curve: Curves.easeIn,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: _lights.light1.value
@@ -99,8 +126,16 @@ class _HomePageState extends State<HomePage> {
                             ),
                             iconSize: 80,
                             color: colorWhite,
+                            splashColor: _lights.light1.value
+                                ? myPrimaryColor
+                                : Colors.black26,
+                            highlightColor: _lights.light1.value
+                                ? myPrimaryLightColor
+                                : colorGrey,
                             onPressed: () {
-                              _lights.setLight1(!_lights.light1.value);
+                              _lights
+                                  .setLight1(!_lights.light1.value)
+                                  .then((_) => {isLightsON()});
                             },
                           ),
                         ),
@@ -109,7 +144,10 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
+                        //* Switch 4
+                        AnimatedContainer(
+                          duration: _myAnimationDuration,
+                          curve: Curves.easeIn,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: _lights.light4.value
@@ -123,12 +161,23 @@ class _HomePageState extends State<HomePage> {
                             ),
                             iconSize: 80,
                             color: colorWhite,
+                            splashColor: _lights.light4.value
+                                ? myPrimaryColor
+                                : Colors.black26,
+                            highlightColor: _lights.light4.value
+                                ? myPrimaryLightColor
+                                : colorGrey,
                             onPressed: () async {
-                              _lights.setLight4(!_lights.light4.value);
+                              _lights
+                                  .setLight4(!_lights.light4.value)
+                                  .then((_) => {isLightsON()});
                             },
                           ),
                         ),
-                        Container(
+                        //* Switch 3
+                        AnimatedContainer(
+                          duration: _myAnimationDuration,
+                          curve: Curves.easeIn,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: _lights.light3.value
@@ -142,22 +191,33 @@ class _HomePageState extends State<HomePage> {
                             ),
                             iconSize: 80,
                             color: colorWhite,
+                            splashColor: _lights.light3.value
+                                ? myPrimaryColor
+                                : Colors.black26,
+                            highlightColor: _lights.light3.value
+                                ? myPrimaryLightColor
+                                : colorGrey,
                             onPressed: () {
-                              _lights.setLight3(!_lights.light3.value);
+                              _lights
+                                  .setLight3(!_lights.light3.value)
+                                  .then((_) => {isLightsON()});
                             },
                           ),
                         ),
                       ],
                     ),
-                    //? All Switches
+                    //* Switch Mains
                     ToggleSwitch(
-                      minHeight: 60,
-                      minWidth: 250.0,
+                      minHeight: 65,
+                      minWidth: 170.0,
                       cornerRadius: 50.0,
                       totalSwitches: 2,
                       fontSize: 18,
                       iconSize: 32,
                       activeFgColor: colorWhite,
+                      animate: true,
+                      animationDuration: 300,
+                      radiusStyle: true,
                       inactiveBgColor: colorGrey,
                       inactiveFgColor: colorWhite,
                       initialLabelIndex: _selectedIndex.value,
@@ -168,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                       activeBgColors: const [
                         [myPrimaryColor],
-                        [Colors.black45]
+                        [Colors.black26]
                       ],
                       onToggle: (index) {
                         if (index == 0) {
@@ -193,18 +253,27 @@ class _HomePageState extends State<HomePage> {
                 children: const [
                   SizedBox(width: double.maxFinite),
                   CircularProgressIndicator(),
+                  SizedBox(height: 15),
+                  Text('Retrieving Data...', style: TextStyle(fontSize: 16)),
                   SizedBox(height: 5),
-                  Text('Retrieving Data...\n\tPlease Wait!!!')
+                  Text('Please Wait!!!', style: TextStyle(fontSize: 14))
                 ],
               );
             }
             if (snapshot.hasError) {
               return Center(
-                child: Text('Something Went Wrong! \n${snapshot.error}'),
+                child: Text('Something Went Wrong! \n${snapshot.error}',
+                    style: const TextStyle(fontSize: 16)),
+              );
+            } else {
+              return const Center(
+                child: Text(
+                    'Something Went Wrong! \nCheck your Network connection & Try Reloading...',
+                    style: TextStyle(fontSize: 16)),
               );
             }
-            return const CircularProgressIndicator();
           }),
+      //* Connct to Wifi Button
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Obx(() => FloatingActionButton(
             onPressed: connectWifi,
@@ -219,6 +288,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  //* Connct to Wifi Func
   connectWifi() {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 

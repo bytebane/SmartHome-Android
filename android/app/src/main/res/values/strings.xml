@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">HomeWidgetTest</string>
+    <string name="app_widget_description">This is an app widget description</string>
+    <string name="l1">Light1</string>
+    <string name="l2">Light2</string>
+    <string name="l3">Light3</string>
+    <string name="l4">Light4</string>
+    <string name="l_all1">All</string>
+    <string name="l_all2">Lights</string>
+    <string name="btnTxt">ON/OFF</string>
+</resources>

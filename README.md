@@ -1,8 +1,11 @@
-# smarthome
+# SmartHome
+
+
+# Project continued in [Filati_App](https://github.com/R3WorkZ/Filati_App.git)
 
 An IOT Project
 
-    :SmartSwitch
+    SmartSwitch
 
 ## SmartHome Starter-Kit
 

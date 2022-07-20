@@ -1,5 +1,5 @@
 name: smarthome
-description: A new Flutter project.
+description: Smart Living.
 
 publish_to: "none"
 
@@ -19,6 +19,8 @@ dependencies:
   firebase_database: ^9.0.15
   firebase_core: ^1.17.1
   get: ^4.6.5
+  is_first_run: ^1.0.0
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:

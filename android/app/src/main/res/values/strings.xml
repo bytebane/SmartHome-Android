@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">HomeWidgetTest</string>
-    <string name="app_widget_description">This is an app widget description</string>
+    <string name="app_name">MyHome</string>
+    <string name="app_widget_description">Smart Living Home Screen Widget</string>
     <string name="l1">Light1</string>
     <string name="l2">Light2</string>
     <string name="l3">Light3</string>

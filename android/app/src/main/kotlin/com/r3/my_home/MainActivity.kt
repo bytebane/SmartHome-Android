@@ -1,7 +1,4 @@
-package com.r3.smarthome.smarthome
-
-
-import io.flutter.embedding.android.FlutterActivity
+package com.r3.my_home
 
 import android.util.Log
 import android.content.Intent
@@ -13,18 +10,20 @@ import com.google.firebase.database.*
 import android.content.ContentValues.TAG
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import com.r3.smarthome.smarthome.R.layout.home_widget
+import io.flutter.embedding.android.FlutterActivity
+
+import com.r3.my_home.R.layout.home_widget
 
 class MainActivity: FlutterActivity() {
 }
 
-val dbRef: DatabaseReference = FirebaseDatabase.getInstance().getReference("myHome")
+val dbRef: DatabaseReference = FirebaseDatabase.getInstance().getReference("myHome/switches")
 
-var light1_isOn: Boolean = false
-var light2_isOn: Boolean = false
-var light3_isOn: Boolean = false
-var light4_isOn: Boolean = false
-var lights_areOn: Boolean = false
+var switch1_isOn: Boolean = false
+var switch2_isOn: Boolean = false
+var switch3_isOn: Boolean = false
+var switch4_isOn: Boolean = false
+var switches_areOn: Boolean = false
 
 var textLight1: String = ""
 var textLight2: String = ""
@@ -64,8 +63,8 @@ class HomeWidget : AppWidgetProvider() {
         val appWidgetManager = AppWidgetManager.getInstance(context)
 //--1
         if (actionLight1 == intent!!.action) {
-            light1_isOn = !light1_isOn
-            dbRef.child("light1").setValue(light1_isOn).addOnFailureListener { err ->
+            switch1_isOn = !switch1_isOn
+            dbRef.child("switch1").setValue(switch1_isOn).addOnFailureListener { err ->
                 Log.e(TAG, "Error ${err.message}")
             }
             setTexts(views)
@@ -73,8 +72,8 @@ class HomeWidget : AppWidgetProvider() {
         }
 //--2
         if (actionLight2 == intent!!.action) {
-            light2_isOn = !light2_isOn
-            dbRef.child("light2").setValue(light2_isOn).addOnFailureListener { err ->
+            switch2_isOn = !switch2_isOn
+            dbRef.child("switch2").setValue(switch2_isOn).addOnFailureListener { err ->
                 Log.e(TAG, "Error ${err.message}")
             }
             setTexts(views)
@@ -82,8 +81,8 @@ class HomeWidget : AppWidgetProvider() {
         }
 //--3
         if (actionLight3 == intent!!.action) {
-            light3_isOn = !light3_isOn
-            dbRef.child("light3").setValue(light3_isOn).addOnFailureListener { err ->
+            switch3_isOn = !switch3_isOn
+            dbRef.child("switch3").setValue(switch3_isOn).addOnFailureListener { err ->
                 Log.e(TAG, "Error ${err.message}")
             }
             setTexts(views)
@@ -91,8 +90,8 @@ class HomeWidget : AppWidgetProvider() {
         }
 //--4
         if (actionLight4 == intent!!.action) {
-            light4_isOn = !light4_isOn
-            dbRef.child("light4").setValue(light4_isOn).addOnFailureListener { err ->
+            switch4_isOn = !switch4_isOn
+            dbRef.child("switch4").setValue(switch4_isOn).addOnFailureListener { err ->
                 Log.e(TAG, "Error ${err.message}")
             }
             setTexts(views)
@@ -100,17 +99,17 @@ class HomeWidget : AppWidgetProvider() {
         }
 //--5
         if (actionLightsAll == intent!!.action) {
-            lights_areOn = !lights_areOn
-            light1_isOn = lights_areOn
-            light2_isOn = lights_areOn
-            light3_isOn = lights_areOn
-            light4_isOn = lights_areOn
-            textLightsAll = getOnOffText(lights_areOn)
+            switches_areOn = !switches_areOn
+            switch1_isOn = switches_areOn
+            switch2_isOn = switches_areOn
+            switch3_isOn = switches_areOn
+            switch4_isOn = switches_areOn
+            textLightsAll = getOnOffText(switches_areOn)
             val pushVal: MutableMap<String, Boolean> = hashMapOf(
-                "light1" to light1_isOn,
-                "light2" to light2_isOn,
-                "light3" to light3_isOn,
-                "light4" to light4_isOn
+                "switch1" to switch1_isOn,
+                "switch2" to switch2_isOn,
+                "switch3" to switch3_isOn,
+                "switch4" to switch4_isOn
             )
 
             dbRef.setValue(pushVal).addOnFailureListener { err ->
@@ -166,12 +165,12 @@ class HomeWidget : AppWidgetProvider() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get DB object and use the values
                 val post = dataSnapshot.value as Map<String, Boolean>
-                light1_isOn = post["light1"]!!
-                light2_isOn = post["light2"]!!
-                light3_isOn = post["light3"]!!
-                light4_isOn = post["light4"]!!
+                switch1_isOn = post["switch1"]!!
+                switch2_isOn = post["switch2"]!!
+                switch3_isOn = post["switch3"]!!
+                switch4_isOn = post["switch4"]!!
 
-                lights_areOn = light1_isOn && light2_isOn && light3_isOn && light4_isOn
+                switches_areOn = switch1_isOn && switch2_isOn && switch3_isOn && switch4_isOn
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -192,12 +191,12 @@ class HomeWidget : AppWidgetProvider() {
 }
 
 private fun textsLoad() {
-    lights_areOn = light1_isOn && light2_isOn && light3_isOn && light4_isOn
-    textLight1 = getOnOffText(light1_isOn)
-    textLight2 = getOnOffText(light2_isOn)
-    textLight3 = getOnOffText(light3_isOn)
-    textLight4 = getOnOffText(light4_isOn)
-    textLightsAll = getOnOffText(lights_areOn)
+    switches_areOn = switch1_isOn && switch2_isOn && switch3_isOn && switch4_isOn
+    textLight1 = getOnOffText(switch1_isOn)
+    textLight2 = getOnOffText(switch2_isOn)
+    textLight3 = getOnOffText(switch3_isOn)
+    textLight4 = getOnOffText(switch4_isOn)
+    textLightsAll = getOnOffText(switches_areOn)
 }
 
 private fun getOnOffText(isOn: Boolean): String {

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'pages/home.dart';
+import 'utils/themes.dart';
+import 'utils/constants.dart';
+import 'helpers/theme_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,11 +19,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'MyHome',
+      title: appName,
       // debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      initialBinding: ThemeBinding(),
+      themeMode: ThemeMode.system,
       home: const HomePage(),
     );
   }

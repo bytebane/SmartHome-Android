@@ -9,3 +9,6 @@
 - Flutter
 - Firebase
 - GetX
+
+
+## [LICENSE](LICENSE)

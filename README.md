@@ -6,9 +6,7 @@
 
 ### Android Application
 
-- Flutter
+- Kotlin
 - Firebase
-- GetX
-
 
 ## [LICENSE](LICENSE)

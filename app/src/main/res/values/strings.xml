@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">MyHome</string>
+
+    <string name="switch1">switch1</string> <!-- Light 1 Switch -->
+    <string name="switch2">switch2</string> <!-- Light 2 Switch -->
+    <string name="switch3">switch3</string> <!-- Light 3 Switch -->
+    <string name="switch4">switch4</string> <!-- Light 4 Switch -->
+    <string name="switch5">switch5</string> <!-- Fan Switch -->
+    <string name="mainSwitch">mainSwitch</string>
+    <string name="deviceStatus">Device Status</string>
+    <string name="noInternet">No Network Connectivity</string>
+    <string name="getInternet">Kindly Check Your Mobile Data or Connect to a Wifi Network and Restart the App.</string>
+
 </resources>

@@ -7,13 +7,202 @@
     tools:context=".MainActivity">
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Project Setup"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/deviceStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/deviceStatus"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ToggleButton
+            android:id="@+id/switch1"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:textSize="0sp"
+            android:text="@string/switch1"
+            android:textOn="@null"
+            android:textOff="@null"
+            android:contentDescription="@string/switch1"
+            android:tooltipText="Light 1"
+            android:background="@drawable/bulb_toggle_selector"
+            app:layout_constraintBottom_toTopOf="@+id/switch5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/switch5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ToggleButton
+            android:id="@+id/switch2"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:textSize="0sp"
+            android:text="@string/switch2"
+            android:textOn="@null"
+            android:textOff="@null"
+            android:contentDescription="@string/switch2"
+            android:tooltipText="Light 2"
+            android:background="@drawable/bulb_toggle_selector"
+            app:layout_constraintBottom_toTopOf="@+id/switch5"
+            app:layout_constraintEnd_toStartOf="@+id/switch5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ToggleButton
+            android:id="@+id/switch3"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:textSize="0sp"
+            android:text="@string/switch3"
+            android:textOn="@null"
+            android:textOff="@null"
+            android:contentDescription="@string/switch3"
+            android:tooltipText="Light 3"
+            android:background="@drawable/bulb_toggle_selector"
+            app:layout_constraintBottom_toTopOf="@+id/fanSpeed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/switch5"
+            app:layout_constraintTop_toBottomOf="@+id/switch5" />
+
+        <ToggleButton
+            android:id="@+id/switch4"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:textSize="0sp"
+            android:text="@string/switch4"
+            android:textOn="@null"
+            android:textOff="@null"
+            android:contentDescription="@string/switch4"
+            android:tooltipText="Light 4"
+            android:background="@drawable/bulb_toggle_selector"
+            app:layout_constraintBottom_toTopOf="@+id/fanSpeed"
+            app:layout_constraintEnd_toStartOf="@+id/switch5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switch5" />
+
+        <ToggleButton
+            android:id="@+id/switch5"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:textSize="0sp"
+            android:text="@string/switch5"
+            android:textOn="@null"
+            android:textOff="@null"
+            android:contentDescription="@string/switch5"
+            android:tooltipText="Light 5"
+            android:background="@drawable/fan_toggle_selector"
+            app:layout_constraintBottom_toTopOf="@+id/mainSwitch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ToggleButton
+            android:id="@+id/mainSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:textSize="0sp"
+            android:text="@string/mainSwitch"
+            android:background="@drawable/switch_toggle_selector"
+            android:contentDescription="@string/mainSwitch"
+            android:tooltipText="Main Switch"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <SeekBar
+            android:id="@+id/fanSpeed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dip"
+            android:max="5"
+            android:progress="0"
+            android:tooltipText="Fan Speed"
+            android:progressTint="?colorPrimaryVariant"
+            android:thumbTint="?colorPrimaryVariant"
+            android:progressBackgroundTint="?colorSecondaryVariant"
+            app:layout_constraintBottom_toTopOf="@+id/mainSwitch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/progressBarHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.6"
+        android:animateLayoutChanges="true"
+        android:visibility="gone"
+        android:background="?colorOnSecondary">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress_bg"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/noInternetView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.6"
+        android:animateLayoutChanges="true"
+        android:visibility="gone"
+        android:background="?colorOnSecondary"
+        app:layout_constraintBottom_toBottomOf="@+id/mainLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/noInternetTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/noInternet"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/noInternetSubTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/noInternetImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/noInternet"
+            android:src="@drawable/no_internet"
+            app:layout_constraintBottom_toTopOf="@+id/noInternetSubTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/noInternetTitle" />
+
+        <TextView
+            android:id="@+id/noInternetSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/getInternet"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:layout_marginBottom="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <color name="purple_200">#FFBB86FC</color>-->
-<!--    <color name="purple_500">#FF6200EE</color>-->
-<!--    <color name="purple_700">#FF3700B3</color>-->
-<!--    <color name="teal_200">#FF03DAC5</color>-->
-<!--    <color name="teal_700">#FF018786</color>-->
-<!--    <color name="orange_a700">#FFFF6D00</color>-->
-<!--    <color name="orange_a200">#FFFFAB40</color>-->
-<!--    <color name="orange_a400">#FFFF9100</color>-->
-<!--    <color name="ice_blue">#FFbabed8</color> -->
-<!--    <color name="ice_blue_darker">#9AA2D7</color>-->
-<!--    <color name="blue_grey">#FF0F111A</color>-->
-<!--    <color name="grey_ish">#FF2E2F27</color>-->
-<!--    <color name="grey">#303030</color>-->
+    <!--    <color name="purple_200">#FFBB86FC</color>-->
+    <!--    <color name="purple_500">#FF6200EE</color>-->
+    <!--    <color name="purple_700">#FF3700B3</color>-->
+    <!--    <color name="teal_200">#FF03DAC5</color>-->
+    <!--    <color name="teal_700">#FF018786</color>-->
+    <!--    <color name="orange_a700">#FFFF6D00</color>-->
+    <!--    <color name="orange_a200">#FFFFAB40</color>-->
+    <!--    <color name="orange_a400">#FFFF9100</color>-->
+    <!--    <color name="ice_blue">#FFbabed8</color> -->
+    <!--    <color name="ice_blue_darker">#9AA2D7</color>-->
+    <!--    <color name="blue_grey">#FF0F111A</color>-->
+    <!--    <color name="grey_ish">#FF2E2F27</color>-->
+    <!--    <color name="grey">#303030</color>-->
 
     <color name="primary_variant">#0F111A</color>  <!-- Blue Grey -->
     <color name="secondary">#FFbabed8</color> <!-- Ice Blue-->
@@ -21,5 +21,9 @@
     <color name="pitch_black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF0a0c12</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
 
 </resources>

@@ -21,7 +21,6 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
-import com.google.android.material.color.DynamicColors
 import com.google.firebase.database.DataSnapshot
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineName
@@ -67,7 +66,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        DynamicColors.applyToActivitiesIfAvailable(this);
 
 //        Views Initialization & Settings
         progressBarHolder = findViewById(R.id.progressBarHolder)

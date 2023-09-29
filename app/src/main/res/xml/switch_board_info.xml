@@ -13,4 +13,4 @@
     android:previewLayout="@layout/switch_board"
     android:description="@string/app_widget_description"
     android:initialKeyguardLayout="@layout/switch_board"
-    android:previewImage="@drawable/widgetPreview" />
+    android:previewImage="@drawable/widget_preview" />

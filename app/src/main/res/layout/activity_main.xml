@@ -27,10 +27,8 @@
 
         <ImageButton
             android:id="@+id/menuBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/baseline_more_vert_24"
             android:contentDescription="@string/options"
             android:tooltipText="@string/options"
@@ -152,16 +150,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.6"
+        android:clickable="true"
         android:animateLayoutChanges="true"
         android:visibility="gone"
         android:background="?colorOnSecondary">
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
+            android:id="@+id/progress_circular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:indeterminateDrawable="@drawable/progress_bg"
+            android:indeterminate="false"
             android:layout_gravity="center" />
     </FrameLayout>
 
@@ -172,6 +171,7 @@
         android:alpha="0.6"
         android:animateLayoutChanges="true"
         android:visibility="gone"
+        android:clickable="true"
         android:background="?colorOnSecondary"
         app:layout_constraintBottom_toBottomOf="@+id/mainLayout"
         app:layout_constraintEnd_toEndOf="parent"

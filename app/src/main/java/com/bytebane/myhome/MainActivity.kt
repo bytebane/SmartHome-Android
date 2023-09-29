@@ -3,8 +3,9 @@ package com.bytebane.myhome
 import android.animation.ValueAnimator
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
-import android.os.Build
+import android.net.NetworkRequest
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuInflater
@@ -13,6 +14,7 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
@@ -20,7 +22,11 @@ import android.widget.ToggleButton
 import androidx.activity.ComponentActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.OnLifecycleEvent
 import com.google.firebase.database.DataSnapshot
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineName
@@ -28,7 +34,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 
 
 class MainActivity : ComponentActivity() {
@@ -46,6 +51,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var inAnimation: AlphaAnimation
     private lateinit var outAnimation: AlphaAnimation
     private lateinit var progressBarHolder: FrameLayout
+    private lateinit var progressBar: ProgressBar
     private lateinit var mainLayout: ConstraintLayout
     private lateinit var noInternetView: ConstraintLayout
     private lateinit var menuBtn: ImageButton
@@ -53,10 +59,7 @@ class MainActivity : ComponentActivity() {
     private val coroutineScope =
         CoroutineScope(Job() + Dispatchers.Main + CoroutineName("FireBaseRTDB"))
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
-        Log.e(
-            "FireBaseRTDB",
-            exception.message.toString()
-        )
+        Log.e("FireBaseRTDB", exception.message.toString())
     }
 
     private val dataLiveData = MutableLiveData<DataSnapshot>()
@@ -80,7 +83,7 @@ class MainActivity : ComponentActivity() {
         fanSpeed = findViewById(R.id.fanSpeed)
         mainSwitch = findViewById(R.id.mainSwitch)
         menuBtn = findViewById(R.id.menuBtn)
-
+        progressBar = findViewById(R.id.progress_circular)
 
 //        Create a map of switches for convenience
         switchMap = mapOf(
@@ -91,16 +94,22 @@ class MainActivity : ComponentActivity() {
             "switch5" to switch5
         )
 
-//        Show the loader View
+//        Setup Animations
         inAnimation = AlphaAnimation(0f, 1f)
         inAnimation.duration = 200
+        outAnimation = AlphaAnimation(1f, 0f)
+        outAnimation.duration = 200
+
+//        Log.d("LOG", Manifest.permission.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION)
+
+        //        Show the loader View
         progressBarHolder.animation = inAnimation
         progressBarHolder.visibility = View.VISIBLE
 
-        if (!checkForInternet(this)) {
-            noInternetView.animation = inAnimation
-            noInternetView.visibility = View.VISIBLE
-            progressBarHolder.visibility = View.GONE
+        showNetworkOverlay(!checkForInternet(this))
+
+        observeNetworkStatus(this, this) { networkStatus ->
+            runOnUiThread { showNetworkOverlay(networkStatus == NetworkStatus.DISCONNECTED) }
         }
 
 //        ViewAnimator Setup
@@ -127,12 +136,10 @@ class MainActivity : ComponentActivity() {
 
 //            Log.i("TAG-DevStats", deviceDateTime)
 //            val elapsedTime = Duration.between(LocalDateTime.now(), LocalDateTime.parse(deviceDateTime)).seconds
-
+//            val elapsedTime = DateTime.now().difference(DateTime.parse(deviceDateTime))
 //            val currentTimeStamp: Long = Clock.System.now().toEpochMilliseconds()
 //            val deviceTimeStamp = kotlinx.datetime.
 //            Log.i("TAG-Dev-now", currentTimeStamp.toString())
-//            Log.i("TAG-Dev-device", deviceTimeStamp.toString())
-//            val elapsedTime = DateTime.now().difference(DateTime.parse(mydbEvent.snapshot.value.toString()))
 //            if (elapsedTime.inSeconds > 10) {
 //                _isDeviceOnline.value = false
 //            } else {
@@ -142,7 +149,7 @@ class MainActivity : ComponentActivity() {
             updateFanSpeed()
         }
 
-        menuBtn.setOnClickListener{view ->
+        menuBtn.setOnClickListener { view ->
             showPopup(view)
         }
 
@@ -150,14 +157,8 @@ class MainActivity : ComponentActivity() {
         dataLiveData.observe(this) { snapshot ->
             // If the data retrieval is successful, hide the progress bar
             if (snapshot != null) {
-                outAnimation = AlphaAnimation(1f, 0f)
-                outAnimation.duration = 200
                 progressBarHolder.animation = outAnimation
                 progressBarHolder.visibility = View.GONE
-                if (!checkForInternet(this)) {
-                    noInternetView.animation = outAnimation
-                    noInternetView.visibility = View.GONE
-                }
             }
         }
 
@@ -216,6 +217,51 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    //    Check Network Status
+    private fun observeNetworkStatus(
+        context: Context,
+        lifecycleOwner: LifecycleOwner,
+        onStatusChanged: (NetworkStatus) -> Unit
+    ) {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                onStatusChanged(NetworkStatus.CONNECTED)
+            }
+
+            override fun onLost(network: Network) {
+                onStatusChanged(NetworkStatus.DISCONNECTED)
+            }
+
+            override fun onCapabilitiesChanged(
+                network: Network,
+                networkCapabilities: NetworkCapabilities
+            ) {
+                if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    onStatusChanged(NetworkStatus.CONNECTED_TO_WIFI)
+                } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    onStatusChanged(NetworkStatus.CONNECTED_TO_INTERNET)
+                } else {
+                    onStatusChanged(NetworkStatus.DISCONNECTED)
+                }
+            }
+        }
+
+        connectivityManager.registerNetworkCallback(
+            NetworkRequest.Builder().build(),
+            networkCallback
+        )
+
+        lifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
+            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+            fun onDestroy() {
+                connectivityManager.unregisterNetworkCallback(networkCallback)
+            }
+        })
     }
 
     //    toggle all the switches on and off by main switch
@@ -281,6 +327,19 @@ class MainActivity : ComponentActivity() {
         popup.show()
     }
 
+    //    SHow/Hide network overlay
+    private fun showNetworkOverlay(show: Boolean) {
+        if (show) {
+            progressBarHolder.animation = outAnimation
+            progressBarHolder.visibility = View.GONE
+            noInternetView.animation = inAnimation
+            noInternetView.visibility = View.VISIBLE
+        } else {
+            noInternetView.animation = outAnimation
+            noInternetView.visibility = View.GONE
+        }
+    }
+
     //    Check for Internet availability
     private fun checkForInternet(context: Context): Boolean {
 
@@ -292,33 +351,25 @@ class MainActivity : ComponentActivity() {
         // or greater we need to use the
         // NetworkCapabilities to check what type of
         // network has the internet connection
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            // Returns a Network object corresponding to
-            // the currently active default data network.
-            val network = connectivityManager.activeNetwork ?: return false
+        // Returns a Network object corresponding to
+        // the currently active default data network.
+        val network = connectivityManager.activeNetwork ?: return false
 
-            // Representation of the capabilities of an active network.
-            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+        // Representation of the capabilities of an active network.
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
 
-            return when {
-                // Indicates this network uses a Wi-Fi transport,
-                // or WiFi has network connectivity
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+        return when {
+            // Indicates this network uses a Wi-Fi transport,
+            // or WiFi has network connectivity
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
 
-                // Indicates this network uses a Cellular transport. or
-                // Cellular has network connectivity
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            // Indicates this network uses a Cellular transport. or
+            // Cellular has network connectivity
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
 
-                // else return false
-                else -> false
-            }
-        } else {
-            // if the android version is below M
-            @Suppress("DEPRECATION") val networkInfo =
-                connectivityManager.activeNetworkInfo ?: return false
-            @Suppress("DEPRECATION")
-            return networkInfo.isConnected
+            // else return false
+            else -> false
         }
     }
 }

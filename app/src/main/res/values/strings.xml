@@ -14,5 +14,11 @@
     <string name="options">Options</string>
     <string name="appwidget_text">Switch Board</string>
     <string name="app_widget_description">A Simple Home Screen Widget to Toggle Switches.</string>
+    <string name="log_out">Log Out</string>
+    <string name="log_in">Log In</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="device_offline">Device Offline</string>
+    <string name="device_online">Device Online</string>
 
 </resources>

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/deviceConfigBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/device_config"
         android:tooltipText="Connect to Wifi" />
+    <item
+        android:id="@+id/logoutBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/log_out"
+        android:tooltipText="Log Out User" />
 </menu>

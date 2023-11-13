@@ -6,15 +6,14 @@ plugins {
 
 android {
     namespace = "com.bytebane.myhome"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.bytebane.myhome"
         minSdk = 29
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 2
         versionName = "2.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -41,10 +40,10 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.firebase:firebase-database-ktx:20.2.2")
+    implementation("com.google.firebase:firebase-database-ktx:20.3.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.firebase:firebase-auth:22.2.0")
     testImplementation("junit:junit:4.13.2")

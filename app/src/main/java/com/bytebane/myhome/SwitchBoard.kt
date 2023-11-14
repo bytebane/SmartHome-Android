@@ -20,11 +20,9 @@ import kotlinx.coroutines.launch
  */
 private val coroutineScope =
     CoroutineScope(Job() + Dispatchers.Main + CoroutineName("FireBaseRTDB"))
+
 private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-    Log.e(
-        "FireBaseRTDB",
-        exception.message.toString()
-    )
+    Log.e("FireBaseRTDB", exception.message.toString())
 }
 
 private val switches = Array(5) { i -> "switch${i + 1}" }
@@ -56,37 +54,13 @@ class SwitchBoard : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        // There may be multiple widgets active, so update all of them
+
+//        There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
-//        Stream data from database & update widgets
-        coroutineScope.launch(exceptionHandler) {
-            FirebaseCrud.getSwitchesData().observeForever { snapshot ->
-                when (snapshot.key) {
-                    "switch1" -> {
-                        switch1_isOn = snapshot.value as Boolean
-                    }
 
-                    "switch2" -> {
-                        switch2_isOn = snapshot.value as Boolean
-                    }
 
-                    "switch3" -> {
-                        switch3_isOn = snapshot.value as Boolean
-                    }
-
-                    "switch4" -> {
-                        switch4_isOn = snapshot.value as Boolean
-                    }
-
-                    "switch5" -> {
-                        switch5_isOn = snapshot.value as Boolean
-                    }
-                }
-                updateWidgets(context)
-            }
-        }
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -134,6 +108,34 @@ class SwitchBoard : AppWidgetProvider() {
 
     override fun onEnabled(context: Context) {
         // Enter relevant functionality for when the first widget is created
+
+//        Stream data from database & update widgets
+        coroutineScope.launch(exceptionHandler) {
+            FirebaseCrud.getSwitchesData().observeForever { snapshot ->
+                when (snapshot.key) {
+                    "switch1" -> {
+                        switch1_isOn = snapshot.value as Boolean
+                    }
+
+                    "switch2" -> {
+                        switch2_isOn = snapshot.value as Boolean
+                    }
+
+                    "switch3" -> {
+                        switch3_isOn = snapshot.value as Boolean
+                    }
+
+                    "switch4" -> {
+                        switch4_isOn = snapshot.value as Boolean
+                    }
+
+                    "switch5" -> {
+                        switch5_isOn = snapshot.value as Boolean
+                    }
+                }
+                updateWidgets(context)
+            }
+        }
     }
 
     override fun onDisabled(context: Context) {
@@ -157,6 +159,7 @@ internal fun updateAppWidget(
         R.id.widgetMainSwitch,
         pendingIntents(context, ACTION_MAIN_SWITCH)
     )
+
 //    On Click on empty area in widget open application
     views.setOnClickPendingIntent(
         R.id.widgetRoot, PendingIntent.getActivity(

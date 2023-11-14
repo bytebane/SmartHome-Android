@@ -10,7 +10,6 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuInflater
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.LinearInterpolator
@@ -18,7 +17,6 @@ import android.widget.SeekBar
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.activity.ComponentActivity
-import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -32,6 +30,7 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDateTime
@@ -59,6 +58,7 @@ class MainActivity : ComponentActivity() {
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
         Log.e("FireBaseRTDB", exception.message.toString())
     }
+//    TODO Reduce complexity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,8 +134,32 @@ class MainActivity : ComponentActivity() {
             updateFanSpeed()
         }
 
-        binding.menuBtn.setOnClickListener { view ->
-            showPopup(view)
+//        Menu Actions
+        binding.homeToolBar.setOnMenuItemClickListener() { item ->
+            when (item.itemId) {
+                R.id.deviceConfigBtn -> {
+//                    TODO Add ESPTouch SmartConfiguration
+
+                    Toast.makeText(this, item.title, Toast.LENGTH_SHORT).show()
+//                    val intent = Intent(this, DeviceConfigActivity::class.java)
+//                    startActivity(intent)
+//                    finish()
+                }
+
+                R.id.logoutBtn -> {
+                    firebaseAuth.signOut()  // sign out
+                }
+
+            }
+            return@setOnMenuItemClickListener true
+        }
+
+//        Check device status every 10 seconds
+        coroutineScope.launch(coroutineExceptionHandler) {
+            while (true) {
+                delay(10000)
+                checkDeviceStatus()
+            }
         }
 
         // Observe the dataLiveData object
@@ -150,7 +174,6 @@ class MainActivity : ComponentActivity() {
         FirebaseCrud.getDeviceStatus().observe(this) { snapshot ->
             if (snapshot.key == "dateTime") {
                 deviceDateTimeStr = snapshot.value.toString()
-                checkDeviceStatus()
             }
         }
 
@@ -265,12 +288,12 @@ class MainActivity : ComponentActivity() {
             )
             val elapsedDT = Duration.between(deviceDT, LocalDateTime.now())
 
-            if (elapsedDT.seconds > 10) {
-                binding.deviceStatus.text = getString(R.string.device_offline)
-                binding.deviceStatus.setTextColor(Color.RED)
+            if (elapsedDT.seconds > 15) {
+                binding.homeToolBar.title = getString(R.string.device_offline)
+                binding.homeToolBar.setTitleTextColor(Color.RED)
             } else {
-                binding.deviceStatus.text = getString(R.string.device_online)
-                binding.deviceStatus.setTextColor(Color.GREEN)
+                binding.homeToolBar.title = getString(R.string.device_online)
+                binding.homeToolBar.setTitleTextColor(Color.GREEN)
             }
         }
     }
@@ -325,31 +348,6 @@ class MainActivity : ComponentActivity() {
                 fanAnimator.duration = 300
             }
         }
-    }
-
-    private fun showPopup(view: View) {
-        val popup = PopupMenu(this, view)
-        val inflater: MenuInflater = popup.menuInflater
-        inflater.inflate(R.menu.menu, popup.menu)
-        popup.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.deviceConfigBtn -> {
-//                    TODO Add ESPTouch SmartConfiguration
-
-                    Toast.makeText(this, item.title, Toast.LENGTH_SHORT).show()
-//                    val intent = Intent(this, DeviceConfigActivity::class.java)
-//                    startActivity(intent)
-//                    finish()
-                }
-
-                R.id.logoutBtn -> {
-                    firebaseAuth.signOut()  // sign out
-                }
-
-            }
-            true
-        }
-        popup.show()
     }
 
     //    SHow/Hide network overlay

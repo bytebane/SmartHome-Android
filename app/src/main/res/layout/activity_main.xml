@@ -12,29 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/deviceStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="@android:color/transparent"
-            android:text="@string/deviceStatus"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/homeToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/deviceStatus"
+            app:titleCentered="true"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:menu="@menu/menu"
+            />
 
-        <ImageButton
-            android:id="@+id/menuBtn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/baseline_more_vert_24"
-            android:contentDescription="@string/options"
-            android:tooltipText="@string/options"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ToggleButton
             android:id="@+id/switch1"

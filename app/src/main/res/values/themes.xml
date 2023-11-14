@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.MyHome" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -29,5 +29,9 @@
     <style name="Theme.MyHome.AppWidgetContainer" parent="Theme.MyHome.AppWidgetContainerParent">
         <!-- Apply padding to avoid the content of the widget colliding with the rounded corners -->
         <item name="appWidgetPadding">16dp</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">28sp</item>
     </style>
 </resources>

@@ -137,15 +137,11 @@ class MainActivity : ComponentActivity() {
 //        Menu Actions
         binding.homeToolBar.setOnMenuItemClickListener() { item ->
             when (item.itemId) {
-                R.id.deviceConfigBtn -> {
-//                    TODO Add ESPTouch SmartConfiguration
-
-                    Toast.makeText(this, item.title, Toast.LENGTH_SHORT).show()
-//                    val intent = Intent(this, DeviceConfigActivity::class.java)
+//                R.id.settingsBtn -> {
+//                    TODO Add Settings Activity
+//                    val intent = Intent(this, SettingsActivity::class.java)
 //                    startActivity(intent)
-//                    finish()
-                }
-
+//                }
                 R.id.logoutBtn -> {
                     firebaseAuth.signOut()  // sign out
                 }

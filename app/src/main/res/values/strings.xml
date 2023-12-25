@@ -10,7 +10,7 @@
     <string name="deviceStatus">Device Status</string>
     <string name="noInternet">No Network Connectivity</string>
     <string name="getInternet">Kindly Check Your Mobile Data or Connect to a Wifi Network and Restart the App.</string>
-    <string name="device_config">Device Config</string>
+    <string name="settings">Settings</string>
     <string name="options">Options</string>
     <string name="appwidget_text">Switch Board</string>
     <string name="app_widget_description">A Simple Home Screen Widget to Toggle Switches.</string>
